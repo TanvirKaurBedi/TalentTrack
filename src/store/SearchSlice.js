@@ -1,15 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
-    value : 0
+    value: 0
 }
 export const searchSlice = createSlice({
-    name:"searchSlice",
+    name: "searchSlice",
     initialState,
-    reducers:{
+    reducer: {
 
     }
 })
 // Action Creators
-export const {} = searchSlice.actions
-export default  searchSlice.reducer
+export const { } = searchSlice.actions
+export default searchSlice.reducer
