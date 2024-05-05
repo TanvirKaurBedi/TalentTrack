@@ -27,7 +27,7 @@ const employee_count = [
   "201-500",
   "500+",
 ];
-const job_type = ["Remote", "Hybrid", "Office"];
+const job_type = ["Backend", "Frontend", "Fullstack","IOS","Flutter","Android","Dev-Ops","Nlp","Deep-Learning","Sre","Web3","Hr","Hardware","Mechanical","Systems","Finance"];
 
 const JobCard = () => {
   const [jobListing, setJobListing] = useState([]);
@@ -36,6 +36,7 @@ const JobCard = () => {
   const [selectedNumEmployees, setSelectedNumEmployees] = useState("");
   const [selectedJobType, setSelectedJobType] = useState("");
   const [comName, setComName] = useState("");
+  const [filteredJobListing, setFilteredJobListing] = useState([]);
 
   // Infine Scrolling
   async function handleInfiniteScroll() {
@@ -57,6 +58,11 @@ const JobCard = () => {
   useEffect(() => {
     getListOfJobs();
   }, [page]);
+
+  useEffect(() => {
+    filterJobs();
+  }, [selectedExperience, selectedNumEmployees, selectedJobType, comName]);
+
   function getListOfJobs() {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -93,6 +99,29 @@ const JobCard = () => {
   }
   function handleNameChange(event) {
     setComName(event.target.value);
+  }
+  function filterJobs() {
+    let filteredJobs = jobListing.filter((job) => {
+      console.log("job",job.minExp)
+      if (selectedExperience && job.minExp > selectedExperience) {
+        return false;
+      }
+      if (
+        selectedNumEmployees &&
+        !selectedNumEmployees.includes(job.numEmployees)
+      ) {
+        return false;
+      }
+      if (selectedJobType && job.jobRole.toLowerCase() !== selectedJobType.toLowerCase()) {
+        return false;
+      }
+      if (comName && job.companyName.toLowerCase()!== (comName.toLowerCase())) {
+        return false;
+      }
+      return true;
+    });
+    setFilteredJobListing(filteredJobs);
+    console.log("filteredJobs",filteredJobs)
   }
   return (
     <>
@@ -158,7 +187,7 @@ const JobCard = () => {
       </FormControl>
       {/* Card Section */}
       <div className=" job_card_wrapper">
-        {jobListing.map((job, index) => (
+        {filteredJobListing.map((job, index) => (
           <div className="job_card_div" key={index}>
             <Card className="job_card" elevation={3} sx={{ maxWidth: 405 }}>
               <Chip label="Posted 10 days ago" variant="outlined" />
