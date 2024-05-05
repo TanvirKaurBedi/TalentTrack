@@ -13,10 +13,34 @@
 
 .job_card {
     border-radius: 15px !important;
+    padding: 25px !important;
 }
 
 .filter {
     width: 250px;
     margin-right: 15px !important;
     margin-bottom: 10px !important;
+}
+
+.About_text {
+    font-size: 19px !important;
+    font-weight: 600 !important;
+}
+
+.salary_text {
+    color: grey !important;
+    font-weight: 500 !important;
+}
+.About_subtext{
+    font-size: 17px !important;
+    font-weight: 600 !important;
+}
+.exp_text{
+    color: grey !important;
+    font-weight: 700 !important;
+}
+.apply_btn{
+    text-transform:initial !important;
+    background-color: aquamarine !important;
+    color: black !important;
 }

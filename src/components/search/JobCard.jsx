@@ -4,6 +4,7 @@ import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
 import "./style.css";
 import { useEffect, useState } from "react";
+import BoltIcon from '@mui/icons-material/Bolt';
 import {
   CardActions,
   CardContent,
@@ -101,6 +102,16 @@ const JobCard = () => {
     setComName(event.target.value);
   }
   function filterJobs() {
+    if (
+      !selectedExperience &&
+      !selectedNumEmployees &&
+      !selectedJobType &&
+      !comName
+    ) {
+      // If no filter is selected, show all data
+      setFilteredJobListing(jobListing);
+      return;
+    }
     let filteredJobs = jobListing.filter((job) => {
       console.log("job",job.minExp)
       if (selectedExperience && job.minExp > selectedExperience) {
@@ -115,7 +126,7 @@ const JobCard = () => {
       if (selectedJobType && job.jobRole.toLowerCase() !== selectedJobType.toLowerCase()) {
         return false;
       }
-      if (comName && job.companyName.toLowerCase()!== (comName.toLowerCase())) {
+      if (comName && job.companyName.toLowerCase()!== (comName.toLowerCase()  )) {
         return false;
       }
       return true;
@@ -189,7 +200,7 @@ const JobCard = () => {
       <div className=" job_card_wrapper">
         {filteredJobListing.map((job, index) => (
           <div className="job_card_div" key={index}>
-            <Card className="job_card" elevation={3} sx={{ maxWidth: 405 }}>
+            <Card className="job_card" elevation={3} sx={{ maxWidth: 350}}>
               <Chip label="Posted 10 days ago" variant="outlined" />
               <CardHeader
                 avatar={<Avatar src={job.logoUrl} />}
@@ -197,19 +208,19 @@ const JobCard = () => {
                 subheader={job.jobRole}
               ></CardHeader>
               <CardContent>
-                <Typography>
-                  Estimated Salary : {job.minJdSalary} to {job.maxJdSalary}{" "}
+                <Typography className="salary_text">
+                  Estimated Salary :  { job.minJdSalary} {job.minJdSalary ? "-": ""} {job.maxJdSalary}{" "}
                   {job.salaryCurrencyCode}
                 </Typography>
-                <Typography>About Company:</Typography>
-                <Typography>About us</Typography>
+                <Typography className="About_text">About Company:</Typography>
+                <Typography className="About_subtext">About us</Typography>
                 <Typography>{job.jobDetailsFromCompany}</Typography>
-                <Typography>Minimum Experience</Typography>
+                <Typography className="exp_text">Minimum Experience</Typography>
                 <Typography>{job.minExp ? `${job.minExp}` : "-"}</Typography>
               </CardContent>
               <CardActions>
-                <Button variant="contained">Easy Apply</Button>
-                <Button variant="contained">Unlock refferal asks</Button>
+         <Button fullWidth className="apply_btn" variant="contained"> <BoltIcon style={{ color: 'yellow' }} /> Easy Apply</Button>
+                {/* <Button variant="contained" className="unlock_btn">Unlock refferal asks</Button> */}
               </CardActions>
             </Card>
           </div>
