@@ -10,11 +10,32 @@ import {
   Chip,
   Typography,
   Button,
+  FormControl,
+  MenuItem,
+  InputLabel,
+  Select,
+  TextField,
 } from "@mui/material";
+
+const yrExperience = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+const employee_count = [
+  "1-10",
+  "11-20",
+  "21-50",
+  "51-100",
+  "101-200",
+  "201-500",
+  "500+",
+];
+const job_type = ["Remote", "Hybrid", "Office"];
 
 const JobCard = () => {
   const [jobListing, setJobListing] = useState([]);
   const [page, setPage] = useState(0);
+  const [selectedExperience, setSelectedExperience] = useState("");
+  const [selectedNumEmployees, setSelectedNumEmployees] = useState("");
+  const [selectedJobType, setSelectedJobType] = useState("");
+  const [comName, setComName] = useState("");
 
   // Infine Scrolling
   async function handleInfiniteScroll() {
@@ -24,7 +45,6 @@ const JobCard = () => {
         document.documentElement.scrollHeight
       ) {
         setPage((prevPage) => prevPage + 1);
-        
       }
     } catch (error) {
       console.log(error);
@@ -42,7 +62,7 @@ const JobCard = () => {
     myHeaders.append("Content-Type", "application/json");
     const body = JSON.stringify({
       limit: 10,
-      offset:page,
+      offset: page,
     });
 
     const requestOptions = {
@@ -58,12 +78,85 @@ const JobCard = () => {
       .then((response) => response.json())
       .then((result) => {
         console.log("result", result);
-        setJobListing((prevData)=>[...prevData,...result.jdList]);
+        setJobListing((prevData) => [...prevData, ...result.jdList]);
       })
       .catch((error) => console.error(error));
   }
+  function handleExperienceChange(event) {
+    setSelectedExperience(event.target.value);
+  }
+  function handleEmployeeNumChange(event) {
+    setSelectedNumEmployees(event.target.value);
+  }
+  function handleJobType(event) {
+    setSelectedJobType(event.target.value);
+  }
+  function handleNameChange(event) {
+    setComName(event.target.value);
+  }
   return (
     <>
+      {/* Filter Section */}
+
+      {/* Name Filter */}
+      <FormControl className="filter">
+        <TextField
+          id="job_name"
+          label="Name"
+          variant="outlined"
+          value={comName}
+          onChange={handleNameChange}
+        />
+      </FormControl>
+      {/* Experience Filter */}
+      <FormControl className="filter">
+        <InputLabel id="experience_id">Experience</InputLabel>
+        <Select
+          labelId="experience_id"
+          label="Experience"
+          value={selectedExperience}
+          onChange={handleExperienceChange}
+        >
+          {yrExperience.map((yr) => (
+            <MenuItem key={yr} value={yr}>
+              {yr}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      {/* Number Of Employees Filter */}
+      <FormControl className="filter">
+        <InputLabel id="num_employees_id">Num Of Emloyees</InputLabel>
+        <Select
+          labelId="num_employees_id"
+          label="Employees Number"
+          value={selectedNumEmployees}
+          onChange={handleEmployeeNumChange}
+        >
+          {employee_count.map((count) => (
+            <MenuItem key={count} value={count}>
+              {count}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      {/* Job Type Filter */}
+      <FormControl className="filter">
+        <InputLabel id="job_type_id">Job Type</InputLabel>
+        <Select
+          labelId="job_type_id"
+          label="Job Type"
+          value={selectedJobType}
+          onChange={handleJobType}
+        >
+          {job_type.map((type) => (
+            <MenuItem key={type} value={type}>
+              {type}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      {/* Card Section */}
       <div className=" job_card_wrapper">
         {jobListing.map((job, index) => (
           <div className="job_card_div" key={index}>
@@ -83,7 +176,7 @@ const JobCard = () => {
                 <Typography>About us</Typography>
                 <Typography>{job.jobDetailsFromCompany}</Typography>
                 <Typography>Minimum Experience</Typography>
-                <Typography>{job.minExp ? `${job.minExp}` : '-'}</Typography>
+                <Typography>{job.minExp ? `${job.minExp}` : "-"}</Typography>
               </CardContent>
               <CardActions>
                 <Button variant="contained">Easy Apply</Button>
