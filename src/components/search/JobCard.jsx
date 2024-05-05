@@ -83,7 +83,7 @@ const JobCard = () => {
                 <Typography>About us</Typography>
                 <Typography>{job.jobDetailsFromCompany}</Typography>
                 <Typography>Minimum Experience</Typography>
-                <Typography>{job.minExp}</Typography>
+                <Typography>{job.minExp ? `${job.minExp}` : '-'}</Typography>
               </CardContent>
               <CardActions>
                 <Button variant="contained">Easy Apply</Button>
